@@ -1,0 +1,106 @@
+#
+# Makefile for lunar-calendar
+#
+
+# Package information
+PACKAGE_NAME       = @PACKAGE_NAME@
+PACKAGE_VERSION    = @PACKAGE_VERSION@
+PACKAGE_STRING     = @PACKAGE_STRING@
+PACKAGE_BUGREPORT  = @PACKAGE_BUGREPORT@
+PACKAGE_TARNAME    = @PACKAGE_TARNAME@
+PACKAGE_URL        = @PACKAGE_URL@
+DIST_NAME          = $(PACKAGE_TARNAME)-$(PACKAGE_VERSION)
+TARGET             = $(PACKAGE_TARNAME)
+
+# Source files and directories
+srcdir      = @srcdir@
+SRCS        = $(shell find $(srcdir)/src -type f -name '*.c')
+HEADERS     = $(patsubst $(srcdir)/src/%,%,$(shell find $(srcdir)/src -type f -name '*.h'))
+OBJS        = $(notdir $(SRCS:%.c=%.o))
+VPATH       = $(shell find $(srcdir)/src -type d)
+
+# Install directories
+prefix      = @prefix@
+exec_prefix = @exec_prefix@
+bindir      = @bindir@
+includedir  = @includedir@/$(PACKAGE_TARNAME)
+libdir      = @libdir@
+datarootdir = @datarootdir@
+mandir      = @mandir@
+docdir      = @docdir@
+licensedir  = @licensedir@
+
+# Programs and flags
+CC          = @CC@
+LD          = @CC@
+LN_S        = @LN_S@
+INSTALL     = @INSTALL@
+MKDIR_P     = @MKDIR_P@
+CFLAGS      = @CFLAGS@
+LDFLAGS     = @LDFLAGS@
+LIBS        = @LIBS@
+TESTCFLAGS  = @TESTCFLAGS@
+TESTLDFLAGS = @TESTLDFLAGS@
+TESTLIBS    = @TESTLIBS@
+
+# Test files and directories
+#TESTS       = $(shell find $(srcdir)/tests -type f -name '*.c')
+#TESTFILES   = $(shell find $(srcdir)/tests/testfiles -type f)
+#TEST_OBJS   = $(notdir $(TESTS:%.c=%.o))
+#VPATH      += $(shell find $(srcdir)/tests -type d)
+
+.SUFFIXES:
+.SUFFIXES: .c .o
+
+all: $(TARGET) install-git-hooks
+
+$(TARGET): $(OBJS)
+	$(LD) $(LDFLAGS) -o $@ $^ $(LIBS)
+
+%-test.o: %-test.c
+	$(CC) -c $(TESTCFLAGS) -o $@ $<
+
+%.o: %.c
+	$(CC) -c $(CFLAGS) -o $@ $<
+
+install-git-hooks: $(srcdir)/tests/pre-commit.sh
+	-@$(LN_S) -f ../../tests/pre-commit.sh $(srcdir)/.git/hooks/pre-commit
+
+install: all
+	$(INSTALL) -Dm 755 "$(TARGET)" -t "$(bindir)"
+	$(INSTALL) -Dm 644 "$(srcdir)/LICENSE" -t "$(licensedir)"
+
+uninstall:
+	-rm -f "$(bindir)/$(TARGET)"
+	-rm -rf "$(licensedir)"
+
+clean:
+	-@rm -f $(TARGET) test *.o
+
+distclean: clean
+	-@rm -rf autom4te.cache config.log config.status Makefile $(DIST_NAME) $(DIST_NAME).tar.gz
+
+## run tests against the built results
+#check: all test testfiles
+#	LD_LIBRARY_PATH=. ./test
+#
+#test: $(TARGET) $(TEST_OBJS)
+#	$(LD) $(TESTLDFLAGS) -o $@ $(TEST_OBJS) $(TESTLIBS)
+#
+#testfiles: $(TESTFILES)
+#	cp -f $^ .
+#
+## run tests against the installed package
+#installcheck:
+#	# TODO
+#
+#dist:
+#	$(MKDIR_P) $(DIST_NAME)
+#	cp    $(srcdir)/configure   $(DIST_NAME)
+#	cp    $(srcdir)/Makefile.in $(DIST_NAME)
+#	cp    $(srcdir)/LICENSE     $(DIST_NAME)
+#	cp -r $(srcdir)/src         $(DIST_NAME)
+#	cp -r $(srcdir)/tests       $(DIST_NAME)
+#	tar zcvf $(DIST_NAME).tar.gz $(DIST_NAME)
+
+.PHONY: all install-git-hooks install uninstall clean distclean check testfiles installcheck dist

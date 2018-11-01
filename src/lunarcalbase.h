@@ -6,24 +6,24 @@
 #define TZ_CN 8
 
 struct solarterm {
-    double jd;
-    int longitude;
+	double jd;
+	int longitude;
 };
 
 struct lunarcal {
-    double jd;
-    int solarterm;    /* index of solarterm */
-    int lyear;        /* year in Lunar Calendar */
-    int month;        /* month in Lunar Calendar */
-    int day;          /* day in Lunar Calendar */
-    int holiday;      /* index of CN_HOLIDAY, -1 if not a traditional Holiday */
-    int is_lm;        /* leapmonth? */
+	double jd;
+	int solarterm;    /* index of solarterm */
+	int lyear;        /* year in Lunar Calendar */
+	int month;        /* month in Lunar Calendar */
+	int day;          /* day in Lunar Calendar */
+	int holiday;      /* index of CN_HOLIDAY, -1 if not a traditional Holiday */
+	int is_lm;        /* leapmonth? */
 };
 
 struct lunarcal_cache {  /* the item in cache */
-    int year;
-    int len;             /* days count of this cached lunar calendar */
-    struct lunarcal *lcs[MAX_DAYS];   /* the cached lunar calendar */
+	int year;
+	int len;             /* days count of this cached lunar calendar */
+	struct lunarcal *lcs[MAX_DAYS];   /* the cached lunar calendar */
 };
 
 /* Function prototypes */

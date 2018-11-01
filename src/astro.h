@@ -20,14 +20,14 @@
 #define MAX_CPUINFO_LEN 1000  /* max line buf size when parse /proc/cpuinfo */
 
 typedef struct {
-    int year;
-    int month;
-    double day;
+	int year;
+	int month;
+	double day;
 } GregorianDate;
 
 struct worker_param {
-    int tid;
-    double tc;           /* t in century */
+	int tid;
+	double tc;           /* t in century */
 };
 
 /* Function prototypes */
@@ -63,7 +63,7 @@ double vsopLx(double vsopterms[][3], size_t rowcount, double t);
 
 double vsop(double jd);
 
-double rootbysecand(double (*f)(double , double),
+double rootbysecand(double (*f)(double, double),
                     double angle, double x0, double x1, double precision);
 
 double f_solarangle(double jd, double angle);

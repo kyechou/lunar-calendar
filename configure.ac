@@ -33,7 +33,7 @@ AS_IF([test "$OS" = "Debian" -o "$OS" = "Ubuntu"],
 ##
 AC_CONFIG_FILES([Makefile])
 #AC_CONFIG_FILES([codecov.sh:tests/codecov.sh.in], [chmod +x codecov.sh])
-AC_CONFIG_SRCDIR([src/lunarcal.c])
+AC_CONFIG_SRCDIR([src/main.c])
 AC_CONFIG_AUX_DIR([build-aux])
 
 
@@ -185,7 +185,7 @@ SAFE_ADD_CFLAG_AND_TESTCFLAG([-Wall])
 SAFE_ADD_CFLAG_AND_TESTCFLAG([-Wextra])
 SAFE_ADD_CFLAG_AND_TESTCFLAG([-Werror])
 SAFE_ADD_CFLAG_AND_TESTCFLAG([-std=c11])
-ADD_CFLAG([-I${srcdir}/src -fPIC])
+ADD_CFLAG([-I${srcdir}/src -D_POSIX_C_SOURCE=200809L -fPIC])
 ADD_LDFLAG([-Wl,-s -static])
 #ADD_TESTCFLAG([-I${srcdir}/src])
 #ADD_TESTLDFLAG([-L.])

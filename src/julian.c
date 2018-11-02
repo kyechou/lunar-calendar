@@ -89,9 +89,9 @@ GregorianDate jd2g(double jd)
  *     ut: convert to UTC(adjust delta T)
  * Return:
  *     Julian Day
- *
  */
-double jdptime(char *isodt, char *fmt, double tz, int isut)
+/*double jdptime(char *isodt, char *fmt, double tz, int isut)*/
+double jdptime(char *isodt, char *fmt)
 {
 	char inputstr[40];
 	char *isodate;

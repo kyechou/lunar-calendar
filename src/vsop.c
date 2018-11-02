@@ -649,11 +649,8 @@ static double earth_R5[1][3] = {
 double vsopLx(double vsopterms[][3], size_t rowcount, double t)
 {
 	double lx = 0;
-	int i;
-	for (i = 0; i < rowcount; i++) {
+	for (size_t i = 0; i < rowcount; i++)
 		lx += vsopterms[i][0] * cos(vsopterms[i][1] + vsopterms[i][2] * t);
-	}
-
 	return lx;
 }
 

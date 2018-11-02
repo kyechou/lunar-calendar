@@ -164,7 +164,7 @@ int get_cached_lc(struct lunarcal *lcs[], int len, int year)
 	}
 
 	/* not in cache, generate a new lunar calendar */
-	lc_days = gen_lunar_calendar(lcs, len, year);
+	lc_days = gen_lunar_calendar(lcs, year);
 
 	add_cache(lcs, lc_days);
 
@@ -223,7 +223,8 @@ void update_solarterms_newmoons(int year)
 
 
 /* mark year, month and day number, plus solarterms and holiday */
-int gen_lunar_calendar(struct lunarcal *lcs[], int len, int year)
+/*int gen_lunar_calendar(struct lunarcal *lcs[], int len, int year)*/
+int gen_lunar_calendar(struct lunarcal *lcs[], int year)
 {
 	int i, k, m, n;
 	int leapmonth, lyear, month;
@@ -447,7 +448,6 @@ void ganzhi(char *buf, size_t buflen, int lyear)
 
 void print_lunarcal(struct lunarcal *lcs[], int len)
 {
-	int i;
 	char isodate[BUFSIZE], dtstart[BUFSIZE], dtend[BUFSIZE];
 	char summary[BUFSIZE], utcstamp[BUFSIZE];
 	struct lunarcal *lc;
@@ -456,11 +456,11 @@ void print_lunarcal(struct lunarcal *lcs[], int len)
 
 	utc_time = gmtime(&t);
 	memset(utcstamp, 0, BUFSIZE);
-	sprintf(utcstamp, "%04d%02d%02dT%02d%02d%02dZ",
+	snprintf(utcstamp, BUFSIZE, "%04d%02d%02dT%02d%02d%02dZ",
 	        1900 + utc_time->tm_year, 1 + utc_time->tm_mon, utc_time->tm_mday,
 	        utc_time->tm_hour, utc_time->tm_min, utc_time->tm_sec);
 
-	for (i = 0; i < len; i++) {
+	for (int i = 0; i < len; i++) {
 		lc = lcs[i];
 		jdftime(isodate, lc->jd, "%y-%m-%d", 0, 0);
 		jdftime(dtstart, lc->jd, "%y%m%d", 0, 0);

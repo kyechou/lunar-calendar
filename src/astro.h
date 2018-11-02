@@ -39,7 +39,8 @@ double normrad(double r);
 
 double npitopi(double r);
 
-double jdptime(char *isodt, char *fmt, double tz, int isut);
+/*double jdptime(char *isodt, char *fmt, double tz, int isut);*/
+double jdptime(char *isodt, char *fmt);
 
 size_t jdftime(char *isodt, double jd, char *fmt, double tz, int isut);
 

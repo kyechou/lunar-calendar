@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <getopt.h>
+#include "error.h"
 #include "lunarcalbase.h"
 
 static const struct option longopts[] = {
@@ -34,14 +35,14 @@ int main(int argc, char **argv)
 		case 's':
 			start = strtol(optarg, &endptr, 10);
 			if (*optarg == '\0' || *endptr != '\0') {
-				fprintf(stderr, "error: invalid start year \'%s\'\n", optarg);
+				lc_error("invalid start year \'%s\'\n", optarg);
 				return 1;
 			}
 			break;
 		case 'e':
 			end = strtol(optarg, &endptr, 10);
 			if (*optarg == '\0' || *endptr != '\0') {
-				fprintf(stderr, "error: invalid end year \'%s\'\n", optarg);
+				lc_error("invalid end year \'%s\'\n", optarg);
 				return 1;
 			}
 			break;

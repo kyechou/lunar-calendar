@@ -251,6 +251,8 @@ AC_CHECK_HEADERS(pthread.h, [], [AC_ERROR([pthread is not available])])
 CHECK_LIB(pthread, pthread_create, [], [AC_ERROR([pthread does not work])])
 ADD_CFLAG(-pthread)
 ADD_LIB(-pthread)
+AC_CHECK_HEADERS(math.h, [], [AC_ERROR([math is not available])])
+ADD_LIB(-lm)
 
 
 ##

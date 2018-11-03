@@ -19,7 +19,7 @@ The higher accuracy light abberation algorithm from A & A. p156,
  Luni-Solar argument multipliers,  coefficients, unit 1e-7 arcsec
  L  L'  F  D  Om longitude (sin, t*sin, cos), obliquity (cos, t*cos, sin)
 */
-static double IAU2000BNutationTable[77][11] = {
+static const double IAU2000BNutationTable[77][11] = {
 	{  0,  0,  0,  0, 1, -172064161, -174666,  33386, 92052331,  9086, 15377 },
 	{  0,  0,  2, -2, 2,  -13170906,   -1675, -13696,  5730336, -3015, -4587 },
 	{  0,  0,  2,  0, 2,   -2276413,    -234,   2796,   978459,  -485,  1374 },
@@ -206,9 +206,9 @@ double lightabbr_high(double jd)
 	// the eccentricity of Earth's orbit
 	e = 0.016708617 - 0.000042037 * t - 0.0000001236 * t2;
 	// Sun's equation of center
-	C = (  (1.9146 - 0.004817 * t - 0.000014 * t2) * sin(M)
-	       + (0.019993 - 0.000101 * t) * sin(2 * M)
-	       + 0.00029 * sin(3 * M)) * DEG2RAD;
+	C = ((1.9146 - 0.004817 * t - 0.000014 * t2) * sin(M)
+	     + (0.019993 - 0.000101 * t) * sin(2 * M)
+	     + 0.00029 * sin(3 * M)) * DEG2RAD;
 	// true anomaly
 	v = M + C;
 	// Sun's distance from the Earth, in AU
@@ -218,4 +218,3 @@ double lightabbr_high(double jd)
 
 	return res;
 }
-

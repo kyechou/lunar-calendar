@@ -119,19 +119,23 @@ int current_tz(char *buf, size_t buflen)
 	if (stat("/etc/timezone", &file_st) == 0 && S_ISREG(file_st.st_mode))
 		return read_from_etc_timezone(buf, buflen);
 
-	if (lstat("/etc/localtime", &file_st) == -1) {
-		lc_error("lstat /etc/localtime failed: %s\n", lc_strerror(errno));
-		return -1;
+	if (lstat("/etc/localtime", &file_st) == 0) {
+		if (S_ISLNK(file_st.st_mode))
+			return read_from_localtime_slink(buf, buflen);
+
+		if (S_ISREG(file_st.st_mode))
+			return compare_tz_files(buf, buflen);
 	}
 
-	if (S_ISLNK(file_st.st_mode))
-		return read_from_localtime_slink(buf, buflen);
-
-	if (S_ISREG(file_st.st_mode))
-		return compare_tz_files(buf, buflen);
-
-	/* unable to determine the system tz */
-	strncpy(buf, "Asia/Taipei", buflen - 1);
-	buf[buflen] = 0;
+	lc_error("/etc/localtime: %s\n", lc_strerror(errno));
+	lc_error("Unable to determine system timezone.\n"
+	         "Please specify your location timezone in Olson format "
+	         "[Asia/Taipei]: ");
+	fgets(buf, buflen, stdin);
+	trim(buf);
+	if (strlen(buf) == 0) {
+		strncpy(buf, "Asia/Taipei", buflen - 1);
+		buf[buflen] = 0;
+	}
 	return 0;
 }

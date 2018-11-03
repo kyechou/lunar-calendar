@@ -27,3 +27,14 @@ int md5sum(unsigned char *digest, const char *filename)
 	}
 	return 0;
 }
+
+int md5cmp(const unsigned char *a, const unsigned char *b)
+{
+	for (int i = 0; i < 16; ++i) {
+		if (a[i] > b[i])
+			return 1;
+		else if (a[i] < b[i])
+			return -1;
+	}
+	return 0;
+}

@@ -8,7 +8,7 @@ Calendar, Apple Calendar, Thunderbird/Lightning, iPhone/iPad, Android。
 以下連結是從 2018 到 2030 的農曆 iCalendar
 文件，把它加入到你最常用的日曆軟體就可以了。
 
-https://raw.github.com/kyechou/lunar-calendar/master/lunar.ics
+https://raw.githubusercontent.com/kyechou/lunar-calendar/master/lunar.ics
 
 
 ### 系統要求
@@ -53,7 +53,7 @@ usable Chinese Lunar Calendar for online or offline calendar software.
 The following link is the generated iCalendar file from 2018 to 2030. You can
 import it to most calendar software directly.
 
-https://raw.github.com/kyechou/lunar-calendar/master/lunar.ics
+https://raw.githubusercontent.com/kyechou/lunar-calendar/master/lunar.ics
 
 The Chinese Lunar Calendar is mostly based on the motion of the Moon, which is
 caused by the complicated interaction with the Sun and the Earth. It also makes

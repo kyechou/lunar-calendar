@@ -37,7 +37,8 @@ void testdeltat()
 //    int i;
 	double jd;
 	char strout[30];
-	jd = jdptime("2012-01-05 18:00", "%y-%m-%d %H:%M", 0, 0);
+	jd = jdptime("2012-01-05 18:00", "%y-%m-%d %H:%M");
+	/*jd = jdptime("2012-01-05 18:00", "%y-%m-%d %H:%M", 0, 0);*/
 	//jd = jdptime("2012-01-05", "%y-%m-%d", 0, 0);
 	printf("%f\n", jd);
 	jdftime(strout, jd, "%y-%m-%d %H:%M", 0, 0);

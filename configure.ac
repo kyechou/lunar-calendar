@@ -186,7 +186,7 @@ SAFE_ADD_CFLAG_AND_TESTCFLAG([-Wextra])
 SAFE_ADD_CFLAG_AND_TESTCFLAG([-Werror])
 SAFE_ADD_CFLAG_AND_TESTCFLAG([-std=c11])
 ADD_CFLAG([-I${srcdir}/src -D_POSIX_C_SOURCE=200809L -fPIC])
-ADD_LDFLAG([-Wl,-s -static])
+ADD_LDFLAG([-Wl,-s])
 #ADD_TESTCFLAG([-I${srcdir}/src])
 #ADD_TESTLDFLAG([-L.])
 AS_IF([test "$enable_coverage" = "yes"], [
@@ -253,6 +253,8 @@ ADD_CFLAG(-pthread)
 ADD_LIB(-pthread)
 AC_CHECK_HEADERS(math.h, [], [AC_ERROR([math is not available])])
 ADD_LIB(-lm)
+AC_CHECK_HEADERS(uuid/uuid.h, [], [AC_ERROR([uuid is not available])])
+ADD_LIB(-luuid)
 
 
 ##

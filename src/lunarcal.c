@@ -3,6 +3,7 @@
 #include <string.h>
 #include <math.h>
 #include <time.h>
+#include <uuid/uuid.h>
 #include "vsop.h"
 #include "lea406.h"
 #include "julian.h"
@@ -303,10 +304,10 @@ int gen_lunar_calendar(struct lunarcal *lcs[], int year)
 /*
  * mark traditional chinese holiday
  *
- * 腊八节(腊月初八)     除夕(腊月的最后一天)     春节(一月一日)
- * 元宵节(一月十五日)   寒食节(清明的前一天)     端午节(五月初五)
- * 七夕节(七月初七)     中元节(七月十五日)       中秋节(八月十五日)
- * 重阳节(九月九日)     下元节(十月十五日)
+ * 臘八節(臘月初八)     除夕(臘月的最後一天)     春節(一月一日)
+ * 元宵節(一月十五日)   寒食節(清明的前一天)     端午節(五月初五)
+ * 七夕節(七月初七)     中元節(七月十五日)       中秋節(八月十五日)
+ * 重陽節(九月九日)     下元節(十月十五日)
  */
 void mark_holiday(struct lunarcal *lcs[], int len)
 {
@@ -322,11 +323,11 @@ void mark_holiday(struct lunarcal *lcs[], int len)
 			continue;
 
 		if (lc->month == 12 && lc->day == 8) {
-			lc->holiday = 0;             /* 腊八 index into CN_HOLIDAY */
+			lc->holiday = 0;             /* 臘八 index into CN_HOLIDAY */
 			i += 15;            /* fastforward */
 		} else if (lc->month == 1 && lc->day == 1) {
 			lcs[i - 1]->holiday = 1;     /* 除夕 */
-			lc->holiday = 2;             /* 春节 */
+			lc->holiday = 2;             /* 春節 */
 			lcs[i + 14]->holiday = 3;    /* 元宵 */
 			i += 20;        /* fastforward to 清明 */
 		} else if (lc->month == 5 && lc->day == 5) {
@@ -340,7 +341,7 @@ void mark_holiday(struct lunarcal *lcs[], int len)
 			lc->holiday = 8;             /* 中秋 */
 			i += 20;
 		} else if (lc->month == 9 && lc->day == 9) {
-			lc->holiday = 9;             /* 重阳 */
+			lc->holiday = 9;             /* 重陽 */
 			i += 27;
 		} else if (lc->month == 10 && lc->day == 15) {
 			lc->holiday = 10;            /* 下元 */
@@ -357,9 +358,9 @@ void mark_holiday(struct lunarcal *lcs[], int len)
  * Return: 0 if not a leap year
  *         values other than 0 indicate leapmonth, count from lc month
  *         11(Winter Month)
- *             1: leap month 11, 闰十一月, one month after Winter Month
- *             2: leap month 12, 闰十二月, two month after Winter Month
- *             3: leap month 1, 闰正月, three month after Winter Month
+ *             1: leap month 11, 閏十一月, one month after Winter Month
+ *             2: leap month 12, 閏十二月, two month after Winter Month
+ *             3: leap month 1, 閏正月, three month after Winter Month
  *             ...
  */
 int find_leap(void)
@@ -435,7 +436,7 @@ struct lunarcal *lcalloc(double jd)
 }
 
 
-/* generate 干支年份, e.g. 丙申[猴] */
+/* generate 干支年份, e.g. 丙申 [猴] */
 void ganzhi(char *buf, size_t buflen, int lyear)
 {
 	int idx_gan, idx_zhi, idx_sx;
@@ -443,7 +444,7 @@ void ganzhi(char *buf, size_t buflen, int lyear)
 	idx_gan = lyear % 10;
 	idx_zhi = lyear % 12;
 	idx_sx = idx_zhi;
-	snprintf(buf, buflen, "%s%s[%s]", GAN[idx_gan], ZHI[idx_zhi], SX[idx_sx]);
+	snprintf(buf, buflen, "%s%s [%s]", GAN[idx_gan], ZHI[idx_zhi], SX[idx_sx]);
 }
 
 
@@ -454,6 +455,8 @@ void print_lunarcal(struct lunarcal *lcs[], int len)
 	struct lunarcal *lc;
 	struct tm *utc_time;
 	time_t t = time(NULL);
+	uuid_t uuid;
+	char uuidstr[40];
 
 	utc_time = gmtime(&t);
 	memset(utcstamp, 0, BUFSIZE);
@@ -470,9 +473,9 @@ void print_lunarcal(struct lunarcal *lcs[], int len)
 		memset(summary, 0, BUFSIZE);
 		if (lc->day == 1) {
 			ganzhi(summary, BUFSIZE, lc->lyear);
+			strcat(summary, " ");
 			if (lc->is_lm)
 				strcat(summary, "閏");
-
 			strcat(summary, CN_MON[lc->month]);
 		} else {
 			sprintf(summary, "%s", CN_DAY[lc->day]);
@@ -488,13 +491,15 @@ void print_lunarcal(struct lunarcal *lcs[], int len)
 			strcat(summary, CN_HOLIDAY[lc->holiday]);
 		}
 
+		uuid_generate(uuid);
+		uuid_unparse(uuid, uuidstr);
 		printf("BEGIN:VEVENT\n"
 		       "DTSTAMP:%s\n"
-		       "UID:%s-lc@infinet.github.io\n"
+		       "UID:%s\n"
 		       "DTSTART;VALUE=DATE:%s\n"
 		       "DTEND;VALUE=DATE:%s\n"
 		       "STATUS:CONFIRMED\n"
 		       "SUMMARY:%s\n"
-		       "END:VEVENT\n", utcstamp, isodate, dtstart, dtend, summary);
+		       "END:VEVENT\n", utcstamp, uuidstr, dtstart, dtend, summary);
 	}
 }

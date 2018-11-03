@@ -5,7 +5,7 @@ Calendar, Apple Calendar, Thunderbird/Lightning, iPhone/iPad, Android。
 
 ![](./img/lunar-calendar.png)
 
-下面是從 2018 到 2030 的農曆 iCalendar
+以下連結是從 2018 到 2030 的農曆 iCalendar
 文件，把它加入到你最常用的日曆軟體就可以了。
 
 https://raw.github.com/kyechou/lunar-calendar/master/lunar.ics
@@ -50,8 +50,8 @@ Google, Apple, and Microsoft used to provide Chinese Lunar Calendar in iCalendar
 format, but most links are dead over years. It is becoming harder to find a
 usable Chinese Lunar Calendar for online or offline calendar software.
 
-The following is the generated iCalendar file from 2018 to 2030. You can import
-it to most calendar software directly.
+The following link is the generated iCalendar file from 2018 to 2030. You can
+import it to most calendar software directly.
 
 https://raw.github.com/kyechou/lunar-calendar/master/lunar.ics
 

@@ -457,8 +457,8 @@ void print_lunarcal(struct lunarcal *lcs[], int len)
 	utc_time = gmtime(&t);
 	memset(utcstamp, 0, BUFSIZE);
 	snprintf(utcstamp, BUFSIZE, "%04d%02d%02dT%02d%02d%02dZ",
-	        1900 + utc_time->tm_year, 1 + utc_time->tm_mon, utc_time->tm_mday,
-	        utc_time->tm_hour, utc_time->tm_min, utc_time->tm_sec);
+	         1900 + utc_time->tm_year, 1 + utc_time->tm_mon, utc_time->tm_mday,
+	         utc_time->tm_hour, utc_time->tm_min, utc_time->tm_sec);
 
 	for (int i = 0; i < len; i++) {
 		lc = lcs[i];

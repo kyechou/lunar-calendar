@@ -7,6 +7,7 @@
 #include <string.h>
 #include <math.h>
 #include "astro.h"
+#include "julian.h"
 
 /* convert a Gregorian date to JD from AA, p61 */
 double g2jd(int year, int month, double day)

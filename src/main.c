@@ -5,13 +5,13 @@
 #include <errno.h>
 #include "error.h"
 #include "tz.h"
-#include "lunarcalbase.h"
+#include "lunarcal.h"
 
 static const struct option longopts[] = {
 	{"start", required_argument, NULL, 's'},
 	{"end",   required_argument, NULL, 'e'},
 	{"help",  no_argument,       NULL, 'h'},
-	{0,       0,                 0,     0 }
+	{ 0,      0,                 0,     0 }
 };
 
 static const char usage[] =
@@ -92,19 +92,17 @@ int main(int argc, char **argv)
 
 	printf("BEGIN:VCALENDAR\n"
 	       "VERSION:2.0\n"
-	       "PRODID:-//KY Chou//Lunar Calendar//ZH\n"
+	       "PRODID:-//Lunar Calendar//Lunar Calendar %ld-%ld//EN\n"
 	       "CALSCALE:GREGORIAN\n"
 	       "METHOD:PUBLISH\n"
 	       "X-WR-CALNAME:農曆\n"
-	       "X-WR-TIMEZONE:%s\n"
-	       "X-WR-CALDESC:農曆 %ld-%ld (含節氣).\n", tz, start, end);
+	       "X-WR-TIMEZONE:Asia/Taipei\n"
+	       "X-WR-CALDESC:農曆 %ld-%ld (含節氣).\n", start, end, start, end);
 
-	/*
 	while (start <= end) {
 		cn_lunarcal(start);
 		++start;
 	}
-	*/
 
 	printf("END:VCALENDAR\n");
 

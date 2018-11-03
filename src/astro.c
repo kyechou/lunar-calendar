@@ -19,6 +19,9 @@ Reference:
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
+#include "vsop.h"
+#include "lea406.h"
+#include "julian.h"
 #include "astro.h"
 #define MAXITER 20  /* max iteration for Secand Method */
 

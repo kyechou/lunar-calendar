@@ -1,3 +1,8 @@
+#ifndef _LUNARCAL_H
+#define _LUNARCAL_H
+
+extern void cn_lunarcal(int year);
+
 #define MAX_SOLARTERMS 27
 #define MAX_NEWMOONS 15
 #define MAX_DAYS 450
@@ -28,29 +33,18 @@ struct lunarcal_cache {  /* the item in cache */
 };
 
 /* Function prototypes */
-void cn_lunarcal(int year);
-
 int get_cached_lc(struct lunarcal *lcs[], int len, int year);
-
 double normjd(double jd, double tz);
-
 int find_leap(void);
-
 void update_solarterms_newmoons(int year);
-
 /*int gen_lunar_calendar(struct lunarcal *lcs[], int len, int year);*/
 int gen_lunar_calendar(struct lunarcal *lcs[], int year);
-
 void ganzhi(char *buf, size_t buflen, int lyear);
-
 void mark_holiday(struct lunarcal *lcs[], int len);
-
 struct lunarcal *lcalloc(double jd);
-
 void print_lunarcal(struct lunarcal *lcs[], int len);
-
 int get_cache_index(int year);
-
 void init_cache(void);
-
 void add_cache(struct lunarcal *lcs[], int len);
+
+#endif

@@ -19,64 +19,17 @@
 #define MAX_THREADS 32  /* max number of threads for compute lea406-full */
 #define MAX_CPUINFO_LEN 1000  /* max line buf size when parse /proc/cpuinfo */
 
-typedef struct {
-	int year;
-	int month;
-	double day;
-} GregorianDate;
+extern size_t fmtdeg(char *strdeg, double d);
+extern double normrad(double r);
+extern double npitopi(double r);
 
-struct worker_param {
-	int tid;
-	double tc;           /* t in century */
-};
+extern double nutation(double jd);
+extern double lightabbr_high(double jd);
 
-/* Function prototypes */
-
-GregorianDate jd2g(double jd);
-size_t fmtdeg(char *strdeg, double d);
-
-double normrad(double r);
-
-double npitopi(double r);
-
-/*double jdptime(char *isodt, char *fmt, double tz, int isut);*/
-double jdptime(char *isodt, char *fmt);
-
-size_t jdftime(char *isodt, double jd, char *fmt, double tz, int isut);
-
-double g2jd(int year, int month, double day);
-
-double deltaT(int year, int month);
-
-double apparentsun(double jd, int ignorenutation);
-
-double apparentmoon(double jd, int ignorenutation);
-
-double lea406(double jd, int ignorenutation);
-
-void *lea406worker(void *args);
-
-double nutation(double jd);
-
-double lightabbr_high(double jd);
-
-double vsopLx(double vsopterms[][3], size_t rowcount, double t);
-
-double vsop(double jd);
-
-double rootbysecand(double (*f)(double, double),
-                    double angle, double x0, double x1, double precision);
-
-double f_solarangle(double jd, double angle);
-
-double f_msangle(double jd, double angle);
-
-double newmoon(double jd);
-
-void findnewmoons(double newmoons[], int nmcount, double startjd);
-
-double solarterm(int year, double angle);
-
-int findastro(int year);
-
-int cpucount(void);
+extern double rootbysecand(double (*f)(double, double),
+                           double angle, double x0, double x1, double precision);
+extern double f_solarangle(double jd, double angle);
+extern double f_msangle(double jd, double angle);
+extern double newmoon(double jd);
+extern void findnewmoons(double newmoons[], int nmcount, double startjd);
+extern double solarterm(int year, double angle);

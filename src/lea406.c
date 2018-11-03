@@ -17,14 +17,21 @@ Reference:
 #include <pthread.h>
 #include <assert.h>
 #include "astro.h"
-#include "lea406-full.h"
+#include "moon-amplitude-phase.h"
+#include "moon-arguments.h"
+#include "lea406.h"
+
+#define LEA406TERMS 10508
 
 static double vlea406[MAX_THREADS];
 static int num_threads = 0;  /* number of threads for compute lea406-full */
 static int nelems_per_thread;   /* number of elements assigned to a thread */
 
-/* count logical CPU by parsing /proc/cpuinfo */
-int cpucount(void)
+static const double FRM[5] = {
+	785939.924268, 1732564372.3047, -5.279, .006665, -5.522e-5
+};
+
+static int cpucount(void)
 {
 	FILE *fp;
 	int logic_cpu;
@@ -40,9 +47,7 @@ int cpucount(void)
 	return logic_cpu;
 }
 
-
-/* the thread worker for lea406 */
-void *lea406worker(void *args)
+static void *lea406worker(void *args)
 {
 	int tid, i, start, end;
 	double t, tm, tm2, V, arg;
@@ -67,7 +72,6 @@ void *lea406worker(void *args)
 	return NULL;
 }
 
-
 /*
  * LEA-406 Moon Solution
  *
@@ -76,7 +80,6 @@ void *lea406worker(void *args)
  *         Kudryavtsev S.M.  <Astron. Astrophys. 471, 1069 (2007)>
  *
  */
-
 /* compute moon ecliptic longitude using lea406 */
 double lea406(double jd, int ignorenutation)
 {
@@ -122,8 +125,8 @@ double lea406(double jd, int ignorenutation)
 	return V;
 }
 
-
-/* calculate the apparent position of the Moon, it is an alias to the
+/*
+ * calculate the apparent position of the Moon, it is an alias to the
  * lea406 function
  */
 double apparentmoon(double jd, int ignorenutation)

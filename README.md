@@ -1,4 +1,4 @@
-## 農曆、節氣、及傳統節日
+## 農曆、節氣、及傳統節日 (正體中文)
 
 iCalendar 是一種常見的日曆交換格式，許多軟體、服務和裝置都支持，如 Google
 Calendar, Apple Calendar, Thunderbird/Lightning, iPhone/iPad, Android。

@@ -1,13 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include <getopt.h>
 #include <time.h>
 #include <errno.h>
-#include <sys/stat.h>
-#include <unistd.h>
-#include <libgen.h>
 #include "error.h"
+#include "tz.h"
 #include "lunarcalbase.h"
 
 static const struct option longopts[] = {
@@ -41,67 +38,6 @@ static int current_year(void)
 		return -1;
 	}
 	return tm_now.tm_year + 1900;
-}
-
-static int get_timezone(char *buf, size_t buflen)
-{
-	struct stat file_st;
-
-	if (stat("/etc/timezone", &file_st) == 0 && S_ISREG(file_st.st_mode)) {
-		/* read from /etc/timezone as the Olson tz */
-		FILE *file = fopen("/etc/timezone", "r");
-		if (file == NULL) {
-			lc_error("failed to open /etc/timezone: %s\n",
-			         lc_strerror(errno));
-			return -1;
-		}
-		if (fclose(file) == EOF) {
-			lc_error("failed to close /etc/timezone: %s\n",
-			         lc_strerror(errno));
-			return -1;
-		}
-		return 0;
-	}
-
-	if (lstat("/etc/localtime", &file_st) == -1) {
-		lc_error("lstat /etc/localtime failed: %s\n", lc_strerror(errno));
-		return -1;
-	}
-	if (S_ISLNK(file_st.st_mode)) {
-		/* read the symbolic link as the Olson tz */
-		ssize_t count;
-		char lnbuf[512], *path, *area, *location;
-
-		count = readlink("/etc/localtime", lnbuf, sizeof(lnbuf));
-		if (count == -1) {
-			lc_error("readlink failed: %s\n", lc_strerror(errno));
-			return -1;
-		}
-		if (count >= (ssize_t)sizeof(lnbuf)) {
-			lc_error("tz link path too long\n");
-			return -1;
-		}
-		lnbuf[count] = 0;
-		path = strndup(lnbuf, count);
-		location = basename(lnbuf);
-		area = basename(dirname(path));
-		if (strlen(area) + strlen(location) + 1 > buflen - 1) {
-			lc_error("timezone buffer is not big enough\n");
-			return -1;
-		}
-		strncpy(buf, area, buflen);
-		strncat(buf, "/", buflen - strlen(area));
-		strncat(buf, location, buflen - strlen(area) - 1);
-		free(path);
-	} else if (S_ISREG(file_st.st_mode)) {
-		/* compare md5 digests with /usr/share/zoneinfo/... to find out
-		 * the Olson tz */
-		;
-	} else {
-		strncpy(buf, "Asia/Taipei", buflen - 1);
-		buf[buflen] = 0;
-	}
-	return 0;
 }
 
 int main(int argc, char **argv)
@@ -149,8 +85,8 @@ int main(int argc, char **argv)
 		return -1;
 	}
 
-	if (get_timezone(tz, sizeof(tz)) < 0) {
-		lc_error("get_timezone failed\n");
+	if (current_tz(tz, sizeof(tz)) < 0) {
+		lc_error("current_tz failed\n");
 		return -1;
 	}
 
@@ -163,10 +99,12 @@ int main(int argc, char **argv)
 	       "X-WR-TIMEZONE:%s\n"
 	       "X-WR-CALDESC:農曆 %ld-%ld (含節氣).\n", tz, start, end);
 
+	/*
 	while (start <= end) {
-		/*cn_lunarcal(start);*/
+		cn_lunarcal(start);
 		++start;
 	}
+	*/
 
 	printf("END:VCALENDAR\n");
 

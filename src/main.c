@@ -20,9 +20,9 @@ static const char usage[] =
         "Output a lunar calendar in iCalendar format.\n"
         "\n"
         "Options:\n"
+        "    -h, --help           print this message\n"
         "    -s, --start <year>   specify the start year (default: the current year)\n"
         "    -e, --end <year>     specify the end year (default: the start year)\n"
-        "    -h, --help           print this message\n"
         "\n"
         "Note: <year> must be in the range: [1901, 2100]\n"
         "\n";
@@ -50,14 +50,16 @@ int main(int argc, char **argv)
 		switch (op) {
 		case 's':
 			start = strtol(optarg, &endptr, 10);
-			if (*optarg == '\0' || *endptr != '\0') {
+			if (*optarg == '\0' || *endptr != '\0' || start < 1901
+			                || start > 2100) {
 				lc_error("invalid start year \'%s\'\n", optarg);
 				return -1;
 			}
 			break;
 		case 'e':
 			end = strtol(optarg, &endptr, 10);
-			if (*optarg == '\0' || *endptr != '\0') {
+			if (*optarg == '\0' || *endptr != '\0' || end < 1901
+			                || end > 2100) {
 				lc_error("invalid end year \'%s\'\n", optarg);
 				return -1;
 			}

@@ -5,3 +5,5 @@ configure
 Makefile
 tmp.*
 tags
+*.o
+lunar-calendar

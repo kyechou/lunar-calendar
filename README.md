@@ -1,4 +1,4 @@
-## 農曆、節氣、及傳統節日 (正體中文)
+## 農曆、節氣、傳統節日、農曆生日 (正體中文)
 
 iCalendar 是一種常見的日曆交換格式，許多軟體、服務和裝置都支持，如 Google
 Calendar, Apple Calendar, Thunderbird/Lightning, iPhone/iPad, Android。
@@ -27,7 +27,25 @@ https://raw.githubusercontent.com/kyechou/lunar-calendar/master/lunar.ics
 
 ```
 $ ./configure && make
-$ ./lunar-calendar --start <year> --end <year>
+$ ./lunar-calendar [OPTIONS]...
+```
+
+使用範例: 2018 到 2030 的農曆
+
+```
+$ ./lunar-calendar --start 2018 --end 2030 > 2018-2030.ics
+```
+
+使用範例: 從今年到 2100 年，農曆八月十五的生日
+
+```
+$ ./lunar-calendar --end 2100 --month 8 --day 15 --title '生日' > birthday.ics
+```
+
+使用範例: 從今年到 2100 年，農曆每個月初一記得拜拜
+
+```
+$ ./lunar-calendar --end 2100 --day 1 --title '拜拜' > reminder.ics
 ```
 
 請使用 `-h` 選項查看更多使用細節。
@@ -95,7 +113,7 @@ output device. You may use `>` in most shells to redirect the output to a file.
 
 ```
 $ ./configure && make
-$ ./lunar-calendar --start <year> --end <year>
+$ ./lunar-calendar [OPTIONS]...
 ```
 
 Please use option `-h` to see more usage details.

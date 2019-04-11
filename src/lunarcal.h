@@ -1,7 +1,7 @@
 #ifndef _LUNARCAL_H
 #define _LUNARCAL_H
 
-extern void cn_lunarcal(int year);
+extern void cn_lunarcal(int year, int mon, int day, const char *title);
 
 #define MAX_SOLARTERMS 27
 #define MAX_NEWMOONS 15
@@ -42,7 +42,7 @@ int gen_lunar_calendar(struct lunarcal *lcs[], int year);
 void ganzhi(char *buf, size_t buflen, int lyear);
 void mark_holiday(struct lunarcal *lcs[], int len);
 struct lunarcal *lcalloc(double jd);
-void print_lunarcal(struct lunarcal *lcs[], int len);
+void print_lunarcal(struct lunarcal *lcs[], int len, int mon, int day, const char *title);
 int get_cache_index(int year);
 void init_cache(void);
 void add_cache(struct lunarcal *lcs[], int len);

@@ -99,7 +99,7 @@ void init_cache(void)
 }
 
 
-void cn_lunarcal(int year)
+void cn_lunarcal(int year, int mon, int day, const char *title)
 {
 	int i, k, len1, len2;
 	double ystart, yend;
@@ -135,7 +135,7 @@ void cn_lunarcal(int year)
 	for (i = 0; k < MAX_DAYS && i < len2 && nextyear[i]->jd <= yend; k++, i++)
 		output[k] = nextyear[i];
 
-	print_lunarcal(output, k);
+	print_lunarcal(output, k, mon, day, title);
 }
 
 
@@ -448,7 +448,7 @@ void ganzhi(char *buf, size_t buflen, int lyear)
 }
 
 
-void print_lunarcal(struct lunarcal *lcs[], int len)
+void print_lunarcal(struct lunarcal *lcs[], int len, int mon, int day, const char *title)
 {
 	char isodate[BUFSIZE], dtstart[BUFSIZE], dtend[BUFSIZE];
 	char summary[BUFSIZE], utcstamp[BUFSIZE];
@@ -471,24 +471,36 @@ void print_lunarcal(struct lunarcal *lcs[], int len)
 		jdftime(dtend, lc->jd, "%y%m%d", 24, 0);
 
 		memset(summary, 0, BUFSIZE);
-		if (lc->day == 1) {
-			ganzhi(summary, BUFSIZE, lc->lyear);
-			strcat(summary, " ");
-			if (lc->is_lm)
-				strcat(summary, "閏");
-			strcat(summary, CN_MON[lc->month]);
+
+		/* Generated the calendar for specified day */
+		if (mon > 0 || day > 0) {
+			if (day == lc->day &&
+			                (mon == 0 || mon == lc->month)) {
+				if (title)
+					strncpy(summary, title, BUFSIZE - 1);
+			} else {
+				continue;
+			}
 		} else {
-			sprintf(summary, "%s", CN_DAY[lc->day]);
-		}
+			if (lc->day == 1) {
+				ganzhi(summary, BUFSIZE, lc->lyear);
+				strcat(summary, " ");
+				if (lc->is_lm)
+					strcat(summary, "閏");
+				strcat(summary, CN_MON[lc->month]);
+			} else {
+				sprintf(summary, "%s", CN_DAY[lc->day]);
+			}
 
-		if (lc->solarterm != -1) {
-			strcat(summary, " ");
-			strcat(summary, CN_SOLARTERM[lc->solarterm]);
-		}
+			if (lc->solarterm != -1) {
+				strcat(summary, " ");
+				strcat(summary, CN_SOLARTERM[lc->solarterm]);
+			}
 
-		if (lc->holiday != -1) {
-			strcat(summary, " ");
-			strcat(summary, CN_HOLIDAY[lc->holiday]);
+			if (lc->holiday != -1) {
+				strcat(summary, " ");
+				strcat(summary, CN_HOLIDAY[lc->holiday]);
+			}
 		}
 
 		uuid_generate(uuid);

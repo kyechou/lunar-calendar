@@ -625,9 +625,6 @@ ac_includes_default="\
 
 ac_subst_vars='LTLIBOBJS
 LIBOBJS
-TESTLIBS
-TESTLDFLAGS
-TESTCFLAGS
 EGREP
 GREP
 CPP
@@ -5264,103 +5261,7 @@ fi
 fi
 
 
-##
-## Libraries for testing
-##
-LUNARCAL_CFLAGS="$CFLAGS"
-LUNARCAL_LDFLAGS="$LDFLAGS"
-LUNARCAL_LIBS="$LIBS"
-CFLAGS="$TESTCFLAGS"
-LDFLAGS="$TESTLDFLAGS"
-LIBS="$TESTLIBS"
-for ac_header in criterion/criterion.h
-do :
-  ac_fn_c_check_header_mongrel "$LINENO" "criterion/criterion.h" "ac_cv_header_criterion_criterion_h" "$ac_includes_default"
-if test "x$ac_cv_header_criterion_criterion_h" = xyes; then :
-  cat >>confdefs.h <<_ACEOF
-#define HAVE_CRITERION_CRITERION_H 1
-_ACEOF
-
-else
-  as_fn_error $? "criterion is not available" "$LINENO" 5
-fi
-
-done
-
-
-        save_LIBS="$LIBS"
-        { $as_echo "$as_me:${as_lineno-$LINENO}: checking for criterion_run_all_tests in -lcriterion" >&5
-$as_echo_n "checking for criterion_run_all_tests in -lcriterion... " >&6; }
-if ${ac_cv_lib_criterion_criterion_run_all_tests+:} false; then :
-  $as_echo_n "(cached) " >&6
-else
-  ac_check_lib_save_LIBS=$LIBS
-LIBS="-lcriterion  $LIBS"
-cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-
-/* Override any GCC internal prototype to avoid an error.
-   Use char because int might match the return type of a GCC
-   builtin and then its argument prototype would still apply.  */
-#ifdef __cplusplus
-extern "C"
-#endif
-char criterion_run_all_tests ();
-int
-main ()
-{
-return criterion_run_all_tests ();
-  ;
-  return 0;
-}
-_ACEOF
-if ac_fn_c_try_link "$LINENO"; then :
-  ac_cv_lib_criterion_criterion_run_all_tests=yes
-else
-  ac_cv_lib_criterion_criterion_run_all_tests=no
-fi
-rm -f core conftest.err conftest.$ac_objext \
-    conftest$ac_exeext conftest.$ac_ext
-LIBS=$ac_check_lib_save_LIBS
-fi
-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_criterion_criterion_run_all_tests" >&5
-$as_echo "$ac_cv_lib_criterion_criterion_run_all_tests" >&6; }
-if test "x$ac_cv_lib_criterion_criterion_run_all_tests" = xyes; then :
-  cat >>confdefs.h <<_ACEOF
-#define HAVE_LIBCRITERION 1
-_ACEOF
-
-  LIBS="-lcriterion $LIBS"
-
-else
-  as_fn_error $? "criterion does not work" "$LINENO" 5
-fi
-
-        LIBS="$save_LIBS"
-
-
-        if test -z "$LIBS"; then :
-  LIBS="-lcriterion"
-else
-  if test -n "${LIBS##*-lcriterion*}"; then :
-  LIBS="$LIBS -lcriterion"
-fi
-fi
-TESTCFLAGS="$CFLAGS"
-TESTLDFLAGS="$LDFLAGS"
-TESTLIBS="$LIBS"
-CFLAGS="$LUNARCAL_CFLAGS"
-LDFLAGS="$LUNARCAL_LDFLAGS"
-LIBS="$LUNARCAL_LIBS"
-
-
 echo >& 6
-TESTCFLAGS=$TESTCFLAGS
-
-TESTLDFLAGS=$TESTLDFLAGS
-
-TESTLIBS=$TESTLIBS
-
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
 # tests run on this system so they can be shared between configure

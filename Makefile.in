@@ -39,15 +39,6 @@ MKDIR_P     = @MKDIR_P@
 CFLAGS      = @CFLAGS@
 LDFLAGS     = @LDFLAGS@
 LIBS        = @LIBS@
-TESTCFLAGS  = @TESTCFLAGS@
-TESTLDFLAGS = @TESTLDFLAGS@
-TESTLIBS    = @TESTLIBS@
-
-# Test files and directories
-#TESTS       = $(shell find $(srcdir)/tests -type f -name '*.c')
-#TESTFILES   = $(shell find $(srcdir)/tests/testfiles -type f)
-#TEST_OBJS   = $(notdir $(TESTS:%.c=%.o))
-#VPATH      += $(shell find $(srcdir)/tests -type d)
 
 .SUFFIXES:
 .SUFFIXES: .c .o
@@ -56,9 +47,6 @@ all: $(TARGET) install-git-hooks
 
 $(TARGET): $(OBJS)
 	$(LD) $(LDFLAGS) -o $@ $^ $(LIBS)
-
-%-test.o: %-test.c
-	$(CC) -c $(TESTCFLAGS) -o $@ $<
 
 %.o: %.c
 	$(CC) -c $(CFLAGS) -o $@ $<
@@ -80,20 +68,6 @@ clean:
 distclean: clean
 	-@rm -rf autom4te.cache config.log config.status Makefile $(DIST_NAME) $(DIST_NAME).tar.gz
 
-## run tests against the built results
-#check: all test testfiles
-#	LD_LIBRARY_PATH=. ./test
-#
-#test: $(TARGET) $(TEST_OBJS)
-#	$(LD) $(TESTLDFLAGS) -o $@ $(TEST_OBJS) $(TESTLIBS)
-#
-#testfiles: $(TESTFILES)
-#	cp -f $^ .
-#
-## run tests against the installed package
-#installcheck:
-#	# TODO
-#
 #dist:
 #	$(MKDIR_P) $(DIST_NAME)
 #	cp    $(srcdir)/configure   $(DIST_NAME)

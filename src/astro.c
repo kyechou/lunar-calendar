@@ -183,7 +183,7 @@ void findnewmoons(double newmoons[], int nmcount, double startjd)
 /* convert decimal degree to d m s format string */
 size_t fmtdeg(char *strdeg, double d)
 {
-	if (abs(d) > 360)
+	if (fabs(d) > 360)
 		d = fmod(d, 360.0);
 	double fdegree, deg, m, s, tmp;
 	fdegree = fabs(d);

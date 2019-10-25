@@ -257,29 +257,6 @@ AC_CHECK_HEADERS(uuid/uuid.h, [], [AC_ERROR([uuid is not available])])
 ADD_LIB(-luuid)
 
 
-##
-## Libraries for testing
-##
-LUNARCAL_CFLAGS="$CFLAGS"
-LUNARCAL_LDFLAGS="$LDFLAGS"
-LUNARCAL_LIBS="$LIBS"
-CFLAGS="$TESTCFLAGS"
-LDFLAGS="$TESTLDFLAGS"
-LIBS="$TESTLIBS"
-AC_CHECK_HEADERS(criterion/criterion.h, [], [AC_ERROR([criterion is not available])])
-CHECK_LIB(criterion, criterion_run_all_tests, [], [AC_ERROR([criterion does not work])])
-ADD_LIB(-lcriterion)
-TESTCFLAGS="$CFLAGS"
-TESTLDFLAGS="$LDFLAGS"
-TESTLIBS="$LIBS"
-CFLAGS="$LUNARCAL_CFLAGS"
-LDFLAGS="$LUNARCAL_LDFLAGS"
-LIBS="$LUNARCAL_LIBS"
-
-
 echo >& AS_MESSAGE_FD
-AC_SUBST([TESTCFLAGS], [$TESTCFLAGS])
-AC_SUBST([TESTLDFLAGS], [$TESTLDFLAGS])
-AC_SUBST([TESTLIBS], [$TESTLIBS])
 AC_OUTPUT
 # vim: set ts=8 sw=8 et:
